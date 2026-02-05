@@ -17,7 +17,8 @@ function EditModal(props) {
     setItem({
       'name': props.accountSelected.name,
       'fullName': props.accountSelected.fullName,
-      address: props.accountSelected.address
+      address: props.accountSelected.address,
+      image: props.accountSelected.image
   })
   },[props.accountSelected])
 
@@ -48,32 +49,42 @@ function EditModal(props) {
 
   return (
    <>
-      <Modal  show={props.show}>
+      <Modal show={props.show} onHide={handleCloneModal}>
         <Modal.Header >
-          <Modal.Title>Edit</Modal.Title>
+          <Modal.Title>Chỉnh Sửa Sản Phẩm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
              <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" placeholder="First Name" defaultValue={props.accountSelected.name} 
+                    <Form.Label>Tên Sản Phẩm</Form.Label>
+                    <Form.Control type="text" placeholder="Tên Sản Phẩm" defaultValue={props.accountSelected.name} 
                       name='name' value={item.name}
                      onChange={handleChangeInput} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" placeholder="Last Name"  defaultValue={props.accountSelected.fullName} 
+                    <Form.Label>Dòng Vợt</Form.Label>
+                    <Form.Control type="text" placeholder="Dòng Vợt"  defaultValue={props.accountSelected.fullName} 
                         name="fullName" value={item.fullName}
                      onChange={handleChangeInput}/>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control type="text" placeholder="Last Name"  defaultValue={props.accountSelected.address} 
+                    <Form.Label>Giá</Form.Label>
+                    <Form.Control type="text" placeholder="Giá"  defaultValue={props.accountSelected.address} 
                       onChange={handleChangeInput}
                       name="address" value={item.address}
                     />
                 </Form.Group>
+                <Form.Group className="mb-3">
+  <Form.Label>Ảnh sản phẩm (URL)</Form.Label>
+  <Form.Control
+    type="text"
+    name="image"
+    value={item.image}
+    onChange={handleChangeInput}
+  />
+</Form.Group>
+
             </Form>
         </Modal.Body>
         <Modal.Footer>

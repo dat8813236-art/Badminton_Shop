@@ -2,43 +2,43 @@ import { Button , Table, Pagination , InputGroup, Form} from "react-bootstrap"
 import { useNavigate } from "react-router";
 import EditModal from "../components/EditModal";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import moment from "moment";
+// import moment from "moment";
 import * as API from "../API/home"
 import Add from "../components/Add";
 import { useSelector , useDispatch} from "react-redux";
+// import { useSearchParams } from "react-router-dom";
+
 import {fetchListUser, setPaging, setValueTotal, setSearch, setShow} from '../redux/slice/home'
 
 
 export default function Home(){
     const dispatch = useDispatch()
     let navigate = useNavigate();
-    //const [show, setShow] = useState(false)
+
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const isAdmin = currentUser?.role === "admin";
+    
+    const handleCloseCreate = () => {
+        setCreate(false);
+      };
+      
 
     const show = useSelector((state) => state.home.show)
 
-    // const [list, setList] = useState([]);
     const list = useSelector((state) => state.home.list)
-    // const [total, setTotal] = useState(0)
+
     const total = useSelector((state) => state.home.total)
-    // const [paging, setPaging] = useState({
-    //     page: 1,
-    //     limit: 10
-    // })
+
     const paging = useSelector((state) => state.home.paging)
 
     const [accountSelected, SetAccountSelected] = useState({})
     const [tmpSearch, setTmpSearch] = useState('')
-    //const [search, setSearch] = useState('')
+
     const search = useSelector((state) => state.home.search)
     const [openCreate, setCreate] = useState(false);
 
     useEffect( () => {
-        // async function fetchData() {
-        //     const response = await API.getDataUser();
-        //     //setList(response.data)
-        //     setTotal(50)
-        // }
-        // fetchData();
+ 
 
         dispatch(fetchListUser({page: paging.page, limit: paging.limit, search}))
         dispatch(setValueTotal(50))
@@ -51,32 +51,27 @@ export default function Home(){
         setCreate(true)
     }, [])
 
-    const handleEdit = async (userId) => {
-        const item = await API.getDetailUser(userId);
-        dispatch(setShow(true))
-        SetAccountSelected(item)
-    }
+    const handleEdit = useCallback(async (userId) => {
+      const item = await API.getDetailUser(userId);
+      dispatch(setShow(true))
+      SetAccountSelected(item)
+  }, [dispatch])
 
     const handleClose = () => {
         dispatch(setShow(false))
         SetAccountSelected({})
     }
 
-    const handleDel = async (userId) => {
-        await API.DeleteUser(userId)
-    }
+    const handleDel = useCallback(async (userId) => {
+      await API.DeleteUser(userId)
+  }, [])
+  
 
-    const handleView = (userID) => {
-        navigate(`/${userID}`)
-    }
-
+  const handleView = useCallback((userID) => {
+    navigate(`/${userID}`)
+}, [navigate])
     const handleClickPage = (page) => {
-        // setPaging((prev) => {
-        //     return {
-        //         ...prev,
-        //         page: page
-        //     }
-        // })
+ 
 
         dispatch(setPaging({
             ...paging,
@@ -121,12 +116,62 @@ export default function Home(){
                         <td>{item.name}</td>
                         <td>{item.fullName}</td>
                         <td>{item.address}</td>
-                        <td>{moment(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
+                        <td><img
+    src={item.image}
+    alt={item.name}
+    style={{
+      width: '100px',
+      height: '100px',
+      objectFit: 'cover',
+      borderRadius: '8px'
+    }}
+    onError={(e) => {
+      e.target.src = 'https://via.placeholder.com/100';
+    }}
+  />
+</td>
+
+
                         <td>
-                            <Button variant="primary" size="sm" onClick={() => handleEdit(item.id)}>Edit</Button>
-                            <Button variant="danger" size="sm" onClick={() => handleDel(item.id)}>Delete</Button>
-                            <Button variant="primary" size="sm" onClick={() => handleView(item.id)}>view</Button>
-                        </td>
+  {isAdmin ? (
+    <>
+      <Button
+        variant="warning"
+        size="sm"
+        className="me-1"
+        onClick={() => handleEdit(item.id)}
+      >
+        Edit
+      </Button>
+
+      <Button
+        variant="danger"
+        size="sm"
+        className="me-1"
+        onClick={() => handleDel(item.id)}
+      >
+        Delete
+      </Button>
+
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={() => handleView(item.id)}
+      >
+        View
+      </Button>
+    </>
+  ) : (
+    <Button
+      variant="success"
+      size="sm"
+      onClick={() => alert("Đã thêm vào giỏ hàng 🛒")}
+    >
+      Đặt hàng
+    </Button>
+  )}
+</td>
+
                     </tr>
                 )
             })
@@ -134,19 +179,26 @@ export default function Home(){
             return null
         }
          
-    }, [handleView, list])
+    }, [handleView, list ,  handleEdit, isAdmin , handleDel])
 
 
     return (
         <>
-            <Button variant="primary" style={{ marginBottom: '1.5rem' }} onClick={handleCreate}>
-                Create
-            </Button>
+           {isAdmin && (
+  <Button
+    variant="primary"
+    style={{ marginBottom: '1.5rem' }}
+    onClick={handleCreate}
+  >
+    Create
+  </Button>
+)}
+
 
              <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">Frist Name</InputGroup.Text>
+                <InputGroup.Text id="basic-addon1">Tìm Kiếm</InputGroup.Text>
                     <Form.Control
-                        placeholder="First Name"
+                        placeholder="Tên Sản Phẩm ... "
                         aria-label="Username"
                         aria-describedby="basic-addon1"
                         onChange={handleChangeSearch}
@@ -157,11 +209,12 @@ export default function Home(){
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Address</th>
-                        <th>createdAt</th>
+                        
+                        <th>STT</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Dòng Vợt</th>
+                        <th>Giá</th>
+                        <th>Ảnh</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -185,10 +238,26 @@ export default function Home(){
                     }
                 )}
             </Pagination>
-            <EditModal show={show} handleClose={handleClose} accountSelected={accountSelected}/>
-            {
-                openCreate && <Add show={openCreate} handleSaveCreate={handleSaveCreate}/>
-            }
+            {isAdmin && (
+  <>
+    <EditModal
+      show={show}
+      handleClose={handleClose}
+      accountSelected={accountSelected}
+    />
+ {
+  openCreate && (
+    <Add
+      show={openCreate}
+      handleSaveCreate={handleSaveCreate}
+      handleClose={handleCloseCreate}
+    />
+  )
+}
+
+  </>
+)}
+
         </>
     )
 }

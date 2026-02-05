@@ -2,6 +2,7 @@
 import { BrowserRouter , Routes, Route} from "react-router-dom";
 import Home from './pages/home';
 import Login from "./pages/login";
+import Register from "./pages/register";
 import MainLayout from "./layout/MainLayout";
 import Create from "./pages/create";
 import NotFound from "./pages/NotFound";
@@ -16,10 +17,12 @@ function App() {
         <Routes>
           <Route element={<MainLayout/>}>
               <Route path="/" element={<Home />} />
+            
               <Route path="/create" element={<Create />} />
               <Route path="/:userID" element={<DetailUser/>}/>
           </Route>
           <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

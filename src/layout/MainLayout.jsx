@@ -5,9 +5,6 @@ import { Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 export default function MainLayout(){
-
-    
-
     return(
         <>
             <Header/>

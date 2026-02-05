@@ -19,11 +19,11 @@ export default function DetailUser(){
 
     return( 
         <>
-            <h1>Tong user {total}</h1>
-            <h1>Detail User</h1>
-            <h2>Name: {data.name}</h2>
+            <h1>Tổng sản phẩm trong kho {total}</h1>
+            <h1>Thông tin sản phẩm</h1>
+            <h2>Tên :  {data.name}</h2>
             <image src={data.avatar}/>
-            <h2>CreatedAt: {moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}</h2>
+            <h2>Ngày Thêm   : {moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}</h2>
         </>
     
     )

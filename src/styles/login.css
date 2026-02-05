@@ -1,0 +1,66 @@
+
+/* ===== LOGIN PAGE ===== */
+
+.login-wrapper {
+    min-height: 80vh;
+    background: linear-gradient(135deg, #eef2ff, #f8f9fa);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  .login-card {
+    width: 400px;
+    border-radius: 14px;
+    border: none;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;  
+  }
+  
+  .login-card h3 {
+    font-weight: 600;
+  }
+  
+  
+  .login-card .card-body {
+    padding: 2rem;
+  }
+  
+  .login-card h3 {
+    font-weight: 600;
+    color: #343a40;
+  }
+  
+  /* Input */
+  .login-card .form-control {
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  
+  .login-card .form-control:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+  }
+  
+  /* Button */
+  .login-card .btn-primary {
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 500;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

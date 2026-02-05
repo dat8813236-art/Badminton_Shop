@@ -10,4 +10,8 @@ export const addSchema = Joi.object({
         'string.empty': 'Full name trống',
     }),
     address: Joi.allow(''),
+    image: Joi.string().uri().required().messages({
+        'string.empty': 'Image trống',
+        'string.uri': 'Image phải là một URL hợp lệ'
+    })
 })

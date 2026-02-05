@@ -6,8 +6,8 @@ export default function Footer(){
         <Container>
             <Row>
             <Col md={6}>
-                <h5>My App</h5>
-                <p className="mb-0">© 2026 My Company</p>
+                <h5>My Shop</h5>
+                <p className="mb-0">© Lê Tiến Đạt Project</p>
             </Col>
 
             <Col md={6} className="text-md-end mt-3 mt-md-0">
